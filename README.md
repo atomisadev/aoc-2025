@@ -1,4 +1,6 @@
-# aoc2025
+# Advent of Code 2025
+
+These are my solutions for the 2025 Advent of Code challenge.
 
 To install dependencies:
 

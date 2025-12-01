@@ -5,7 +5,7 @@
     "solve": "bun src/index.ts",
     "scaffold": "bun src/scripts/scaffold.ts",
     "download": "bun src/scripts/download.ts",
-    "start": "bun scaffold $1 && bun download $1"
+    "start": "bun run src/scripts/start.ts"
   },
   "module": "index.ts",
   "type": "module",

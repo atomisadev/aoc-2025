@@ -8,6 +8,9 @@ console.log("--- Day 07 ---");
 // Part 1
 console.log("Part 1:");
 
+type Grid = string[][];
+type TimelineMap = Map<number, bigint>;
+
 const grid: string[][] = lines.map((line) => line.split(""));
 
 if (grid.length === 0) throw new Error("Input grid empty");
@@ -65,4 +68,52 @@ for (let r = startRow + 1; r < height; r++) {
 console.log(splitCount);
 
 // Part 2
-// console.log("Part 2:");
+console.log("Part 2:");
+
+let currentTimelines: TimelineMap = new Map();
+
+currentTimelines.set(startCol, 1n);
+
+let completedTimelines = 0n;
+
+for (let r = startRow + 1; r < height; r++) {
+  const nextTimelines: TimelineMap = new Map();
+  const currentRow = grid[r];
+
+  if (!currentRow) continue;
+
+  for (const [col, count] of currentTimelines.entries()) {
+    const cell = currentRow[col];
+
+    const addNext = (targetCol: number, amount: bigint) => {
+      if (targetCol < 0 || targetCol >= width!) {
+        completedTimelines += amount;
+      } else {
+        const current = nextTimelines.get(targetCol) || 0n;
+        nextTimelines.set(targetCol, current + amount);
+      }
+    };
+
+    if (cell === "^") {
+      // splitter so the timeline splits into 2 distinct realities
+      // here is reality where it went left
+      addNext(col - 1, count);
+      // realitry where it went right
+      addNext(col + 1, count);
+    } else {
+      // timeline continues downward unchanged
+      addNext(col, count);
+    }
+  }
+
+  currentTimelines = nextTimelines;
+
+  // if no timelines left we stop
+  if (currentTimelines.size === 0) break;
+}
+
+for (const count of currentTimelines.values()) {
+  completedTimelines += count;
+}
+
+console.log(completedTimelines.toString());
